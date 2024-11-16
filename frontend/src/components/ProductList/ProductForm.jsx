@@ -7,11 +7,25 @@ import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
 
 
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
+
 const ProductForm = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [imageFiles, setImageFiles] = useState([]);
   const navigate = useNavigate();
+
+  
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   // Redirect to login if not logged in
   const accessToken = localStorage.getItem("accessToken");
@@ -25,6 +39,7 @@ const ProductForm = () => {
 const onSubmit = async (data,e) => {
   try {
     
+    handleOpen();
     const accessToken = localStorage.getItem("accessToken");
 
  
@@ -65,6 +80,11 @@ const onSubmit = async (data,e) => {
             Authorization: `Bearer ${accessToken}`, // Pass token in Authorization header
         } // If using cookies
     });
+    
+    if(response)
+      {
+        handleClose();
+      }
 
     alert('Product submitted successfully!');
     
@@ -75,6 +95,7 @@ const onSubmit = async (data,e) => {
 
     
   } catch (error) {
+    handleClose();
     alert(error.message)
     if (error.response) {
         console.error("Error submitting data:", error.response.data);  // Detailed response from the server
@@ -104,6 +125,13 @@ const onSubmit = async (data,e) => {
 
   return (
 <div className='productformbg'>
+<Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+        // onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     <div className="product-form-container">
       <h2>Add Product</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
