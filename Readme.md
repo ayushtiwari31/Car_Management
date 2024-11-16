@@ -87,3 +87,25 @@ The application includes user authentication, allowing users to manage only thei
 
 ### 2. Frontend:
    - React.js
+
+---
+---
+
+## Deployment
+
+### 1. Frontend Deployed on vercel
+
+https://car-management-omega.vercel.app/
+
+### 2. Backend Deployed on Render
+
+https://car-management-2-fb32.onrender.com
+
+---
+---
+
+
+## Thankyou
+
+
+
