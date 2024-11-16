@@ -4,10 +4,13 @@ import { API_ENDPOINT } from '../../../Constant.js';
 
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNavigate } from 'react-router-dom';
+
 
 const ProductForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [imageFiles, setImageFiles] = useState([]);
+  const navigate = useNavigate();
 
 const onSubmit = async (data,e) => {
   try {
