@@ -6,18 +6,38 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_ENDPOINT } from '../../../Constant.js';
 
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
+
+
 function Signup() {
   const navigate = useNavigate();
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+
   const onSubmitSignup = async (data) => {
     try {
+      handleOpen();
       const response = await axios.post(`${API_ENDPOINT}/api/users/signup`, data);
-      console.log('Signup successful:', response.data);
-
+      // console.log('Signup successful:', response.data);
+      if(response)
+        {
+          handleClose();
+        }
       alert("Signup successful! Please log in.");
       navigate('/login');
     } catch (error) {
+      handleClose()
       alert("Error signing up. Please try again.");
       console.error('Error signing up:', error);
     } finally {
@@ -33,6 +53,13 @@ function Signup() {
         height: "100vh",
         backgroundColor: "#eef2f3",
       }}>
+        <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+        // onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
         <form
           className="reactform signupform"
           onSubmit={handleSubmit(onSubmitSignup)}

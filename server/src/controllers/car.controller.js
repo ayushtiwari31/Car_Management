@@ -5,8 +5,8 @@ import {uploadOnCloudinary} from "../utils/cloudinary.js"
 export const addCar = async (req, res) => {
   try {
     const { title, description, tags } = req.body;
-    const userId = req.user._id; // Assumes userId is available in req.user after authentication
-    const files = req.files; // Assuming files are in req.files
+    const userId = req.user._id; 
+    const files = req.files; 
 
 
     const uploadedFiles = [];
@@ -14,7 +14,7 @@ export const addCar = async (req, res) => {
     if(req.files)
       {
   
-          // console.log("files upload karni hai")
+         
           for (const file of req.files) {
               console.log(file.path)
               const result =await uploadOnCloudinary(file.path);
@@ -71,7 +71,7 @@ export const updateCar = async (req, res) => {
     const files = req.files;
     const userId = req.user._id;
 
-    // Parse existing image URLs if provided as a JSON string
+   
     let existingImageUrls = [];
     if (existingImages) {
       existingImageUrls = JSON.parse(existingImages); // Existing Cloudinary URLs
@@ -79,7 +79,7 @@ export const updateCar = async (req, res) => {
 
     const uploadedFiles = [];
     
-    // Upload new files to Cloudinary
+    
     if (files && files.length > 0) {
       for (const file of files) {
         const result = await uploadOnCloudinary(file.path);
@@ -122,12 +122,7 @@ export const deleteCar = async (req, res) => {
 
     if (!car) return res.status(404).json({ message: "Car not found or not authorized" });
 
-    // // Delete images from Cloudinary
-    // const deletePromises = car.images.map((url) => {
-    //   const publicId = url.split("/").pop().split(".")[0]; 
-    //   return cloudinary.v2.uploader.destroy(`car_images/${publicId}`);
-    // });
-    // await Promise.all(deletePromises);
+    
 
     res.status(200).json({ message: "Car and images deleted successfully" });
   } catch (error) {

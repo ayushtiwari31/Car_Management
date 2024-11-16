@@ -6,32 +6,43 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_ENDPOINT } from '../../../Constant.js';
 
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 
 function Login() {
   const navigate = useNavigate();
   const { register, handleSubmit, reset, formState: { errors }, watch } = useForm();
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
 
   const onSubmitlogin = async (data) => {
+   
     try {
-        
+      handleOpen();
       const response = await axios.post(`${API_ENDPOINT}/api/users/login`, data);
-
-      console.log('Login successful:', response.data.data);
-
-      const { accessToken, refreshToken, user } = response.data.data; // Extract tokens and user data
-
-    // Save tokens (if you want to store them manually)
+      
+      if(response)
+      {
+        handleClose()
+      }
+     
+      const { accessToken, refreshToken, user } = response.data.data; 
+    
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
 
-    //   if (response) {
-    //     console.log(response.data.user);
-    //   }
-
       navigate('/productlist');
     } catch (error) {
+      handleClose();
       alert("Email or Password is incorrect");
       console.error('Error logging in:', error);
     } finally {
@@ -47,6 +58,14 @@ function Login() {
         height: "100vh",
         backgroundColor: "#f9f9f9",
       }}>
+         <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+        // onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
         <form
           className="reactform loginform"
           onSubmit={handleSubmit(onSubmitlogin)}
