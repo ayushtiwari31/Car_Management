@@ -23,6 +23,9 @@ const ProductListPage = () => {
 
   // Fetch products from backend on page load
   const fetchData = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+
+ 
     try {
       const response = await axios.get(`${API_ENDPOINT}/api/cars/mycars`, {
         headers: {
