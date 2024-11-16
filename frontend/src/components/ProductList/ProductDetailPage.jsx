@@ -5,6 +5,10 @@ import axios from 'axios';
 import { API_ENDPOINT } from '../../../Constant.js';
 import { useNavigate } from 'react-router-dom';
 
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -13,6 +17,14 @@ const ProductDetailPage = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const navigate = useNavigate();
+
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
 
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
@@ -28,12 +40,7 @@ const ProductDetailPage = () => {
     setCurrentImage(null); // Clear the current image
   };
 
-//   const [formData, setFormData] = useState({
-//     title: '',
-//     description: '',
-//     tags: '',
-//     images: [],
-//   });
+
 const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -48,6 +55,7 @@ const [formData, setFormData] = useState({
 
   const fetchData = async () => {
     try {
+      
         const accessToken = localStorage.getItem("accessToken");
       const response = await axios.get(`${API_ENDPOINT}/api/cars/${id}`, {
         headers: {
@@ -57,12 +65,7 @@ const [formData, setFormData] = useState({
 
       const responseData = response.data;
       setProduct(responseData);
-    //   setFormData({
-    //     title: responseData.title,
-    //     description: responseData.description,
-    //     tags: Array.isArray(responseData.tags) ? responseData.tags.join(', ') : '', // Convert array of tags to comma-separated string
-    //     images: responseData.images || [],  // Assuming images are handled similarly
-    //   });
+    
     setFormData({
         title: responseData.title,
         description: responseData.description,
@@ -140,6 +143,8 @@ const [formData, setFormData] = useState({
   
 
     try {
+
+      handleOpen();
       // Send the updated product data using PUT request
       const response = await axios.put(`${API_ENDPOINT}/api/cars/${id}`, formDataToSend , {
         headers: {
@@ -148,6 +153,11 @@ const [formData, setFormData] = useState({
         },
       });
 
+      if(response)
+        {
+          handleClose();
+        }
+
       const responseData = response.data;
       setProduct(responseData);  // Update product data
       setIsEditing(false); // Exit edit mode
@@ -155,6 +165,7 @@ const [formData, setFormData] = useState({
     //   navigate(-1); 
 
     } catch (error) {
+      handleClose();
       console.error("Error updating product:", error);
     }
   };
@@ -198,6 +209,14 @@ const [formData, setFormData] = useState({
         WebkitBackdropFilter: 'blur(10px)', /* Safari support */
         border: '1px solid rgba(255, 255, 255, 0.3)', /* Light border to enhance glass look */
       }}>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+        // onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
         
         <h3>Product Details</h3>
       {isEditing ? (
