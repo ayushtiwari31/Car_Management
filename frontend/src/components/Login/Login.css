@@ -1,0 +1,9 @@
+.login-page{
+    position: relative;
+    
+    min-width: 100vw;
+  
+    background-image: url('./bg.jpg'); /* Background image */
+    background-size: cover; /* Cover entire container without stretching */
+    background-position: center;
+}
