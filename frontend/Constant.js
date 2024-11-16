@@ -1,1 +1,1 @@
-export const API_ENDPOINT="http://localhost:3000"
+export const API_ENDPOINT="https://car-management-2-fb32.onrender.com"
