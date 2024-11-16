@@ -8,10 +8,19 @@ import { useNavigate } from 'react-router-dom';
 
 
 const ProductForm = () => {
-  
+
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [imageFiles, setImageFiles] = useState([]);
   const navigate = useNavigate();
+
+  // Redirect to login if not logged in
+  const accessToken = localStorage.getItem("accessToken");
+  useEffect(() => {
+    if (!accessToken) {
+      alert("You are not logged in. Redirecting to login page.");
+      navigate("/login");
+    }
+  }, [accessToken, navigate]);
 
 const onSubmit = async (data,e) => {
   try {
@@ -19,13 +28,6 @@ const onSubmit = async (data,e) => {
     const accessToken = localStorage.getItem("accessToken");
 
  
-    // Redirect to login if not logged in
-    useEffect(() => {
-      if (!accessToken) {
-        alert("You are not logged in. Redirecting to login page.");
-        navigate("/login");
-      }
-    }, [accessToken, navigate]);
 
     
     const images =imageFiles;
