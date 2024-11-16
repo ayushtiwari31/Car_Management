@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const ProductForm = () => {
+  
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [imageFiles, setImageFiles] = useState([]);
   const navigate = useNavigate();
